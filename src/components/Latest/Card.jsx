@@ -8,28 +8,22 @@ import { motion } from "framer-motion";
 const Card = () => {
   return (
     <motion.div
-    whileInView={{
-        position:"static",
-        skewY:0,
-      }}
-      whileHover={{
-        skewZ:20
-      }}
-      transition={{ duration: 0.5,
-       }}
-      className=" flex flex-col justify-center items-center gap-4 cursor-pointer"
+      initial={{ opacity: 0, scale: 0.5 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className=" flex flex-col justify-center items-center gap-4 cursor-pointer shadow-xl shadow-[#00000057] rounded-xl"
     >
       <div className="relative bg-">
         <img
-          className="h-72 opacity duration-700"
+          className="h-96 opacity duration-700 rounded-xl"
           src={Movie1}
           loading="lazy"
           fetchPriority="high"
           alt="jawan"
         />
-        {/* <img className='h-96 absolute top-0 hover:scale-105 transition-all duration-700' src={Movie2} loading='lazy' fetchPriority='high' alt="jawan" /> */}
+        {/* <img className='h-96 absolute top-0 transition-all duration-700' src={Movie2} loading='lazy' fetchPriority='high' alt="jawan" /> */}
       </div>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center border-black w-full rounded-xl p-2 bg-white">
         <h2 className="text-4xl uppercase font-bold">Jawan</h2>
         <p className="flex gap-1 justify-center items-center">
           Rating:
