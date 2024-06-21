@@ -28,9 +28,9 @@ const Popular = () => {
             data.map(
               (movie, index) =>
                 index < inViewMovies && (
-                  <Link key={index} to={"details"} className="grid">
+                  <div key={index} to={"details"} className="grid">
                     <Card movie={movie} />
-                  </Link>
+                  </div>
                 )
             )}
         </main>

@@ -16,7 +16,7 @@ const Card = ({ movie }) => {
           className="h-full w-full opacity duration-700 rounded-xl"
           src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
           loading="lazy"
-          fetchPriority="high"
+          // fetchPriority="high"
           alt="can't load"
         />
       </div>

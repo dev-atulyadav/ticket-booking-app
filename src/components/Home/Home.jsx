@@ -3,10 +3,12 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 import Popular from "../Popular/Popular";
 import CB from "../../assets/clapperboard.svg"
 import Upcoming from "../Upcoming/Upcoming";
+import { Outlet } from "react-router-dom";
 
 const Home = () => {
   return (
     <>
+    <Outlet/>
       <section id="home" className=" pt-4 px-6 border-b h-screen flex justify-start items-center flex-col w-full">
         <article className=" h-[85%] w-full flex justify-center items-center relative">
           <main className="relative h-full w-full px-14 flex flex-col justify-center items-start z-10">
