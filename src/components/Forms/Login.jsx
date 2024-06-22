@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   auth,
   signInWithEmailAndPassword,
@@ -14,8 +14,8 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 
 const Login = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
-  const dispatch = useDispatch()
-  console.log(user,isLoggedIn);
+  const dispatch = useDispatch();
+  console.log(user, isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -27,9 +27,8 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // alert("Login successful");
       dispatch(login(email));
-      localStorage.setItem("userEmail",email);
+      localStorage.setItem("userInfo", email);
     } catch (error) {
       alert("Error logging in: " + error.message);
     }
@@ -40,37 +39,26 @@ const Login = () => {
       await signInWithPopup(auth, googleProvider);
       console.log(googleProvider.providerId);
       dispatch(login(googleProvider.providerId));
-      localStorage.setItem("userEmail",googleProvider.providerId);
+      localStorage.setItem("userInfo", googleProvider.providerId);
       // alert("Login successful");
     } catch (error) {
       alert("Error logging in: " + error.message);
     }
   };
 
-  const setupRecaptcha = () => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved - will proceed with submit function
-          handlePhoneLogin();
-        },
-      },
-      auth
-    );
-  };
-
   const handlePhoneLogin = async (e) => {
     e.preventDefault();
-    setupRecaptcha();
     const phoneNumber = "+91" + phone;
-    const appVerifier = window.recaptchaVerifier;
     try {
+      const recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {}
+      );
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         phoneNumber,
-        appVerifier
+        recaptchaVerifier
       );
       setConfirmationResult(confirmationResult);
       alert("OTP has been sent");
@@ -84,6 +72,8 @@ const Login = () => {
     try {
       await confirmationResult.confirm(otp);
       alert("Phone Login successful");
+      dispatch(login(phone));
+      localStorage.setItem("userInfo", phone);
     } catch (error) {
       alert("Error verifying OTP: " + error.message);
     }
@@ -95,10 +85,10 @@ const Login = () => {
       <section className=" top-0 absolute flex justify-center items-center h-screen w-full bg-[#b8b8b856] backdrop-blur-[3px] z-40 ">
         <article className="relative p-6 rounded-2xl shadow-xl shadow-[#0000005d] bg-white">
           <Link to="/" className="absolute right-4 text-3xl text-red-600 top-8">
-            <IoCloseCircleOutline/>
+            <IoCloseCircleOutline />
           </Link>
           <h2 className="text-3xl font-bold mb-4">Login</h2>
-          <main>
+          <main className="flex flex-col justify-center items-center">
             {!isLoginWithPhone ? (
               <form
                 className="flex flex-col justify-center items-center gap-6"
@@ -114,6 +104,7 @@ const Login = () => {
                     name="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="flex justify-start flex-col gap-3">
@@ -126,6 +117,7 @@ const Login = () => {
                     name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
                 <button
@@ -136,32 +128,61 @@ const Login = () => {
                 </button>
               </form>
             ) : (
+              !confirmationResult && (
+                <form
+                  className="flex flex-col justify-center items-center gap-6"
+                  onSubmit={handlePhoneLogin}
+                >
+                  <div className="flex justify-start flex-col gap-3">
+                    <label htmlFor="phone">Phone:</label>
+                    <input
+                      className="px-4 h-12 w-72 rounded-lg border border-black focus:border-transparent"
+                      placeholder="Enter Phone Number"
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                  <div id="recaptcha-container"></div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-3 w-28 uppercase py-2 border-sky-400 border rounded-lg text-sky-500 font-semibold hover:bg-sky-500 hover:text-white duration-200"
+                  >
+                    Send OTP
+                  </button>
+                </form>
+              )
+            )}
+            {confirmationResult && (
               <form
                 className="flex flex-col justify-center items-center gap-6"
-                onSubmit={handlePhoneLogin}
+                onSubmit={verifyOtp}
               >
-                <div id="recaptcha-container"></div>
                 <div className="flex justify-start flex-col gap-3">
-                  <label htmlFor="phone">Phone:</label>
+                  <label htmlFor="otp">OTP:</label>
                   <input
                     className="px-4 h-12 w-72 rounded-lg border border-black focus:border-transparent"
-                    placeholder="Enter Phone Number"
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Enter OTP"
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
                   />
                 </div>
                 <button
                   type="submit"
                   className="px-3 w-28 uppercase py-2 border-sky-400 border rounded-lg text-sky-500 font-semibold hover:bg-sky-500 hover:text-white duration-200"
                 >
-                  Send OTP
+                  Verify OTP
                 </button>
               </form>
             )}
-            <div className="flex justify-center items-center flex-col gap-4 mt-4 border-y border-black p-2">
+            <div className="flex justify-center items-center flex-col gap-4 mt-4 border-y border-black p-2 w-full">
               <span>Or</span>
               <div className="flex justify-center items-center flex-col gap-4">
                 <button
@@ -177,27 +198,12 @@ const Login = () => {
                   Continue with {isLoginWithPhone ? "Email" : "Phone"}
                 </button>
               </div>
-              {confirmationResult && (
-                <form
-                  className="flex flex-col justify-center items-center gap-6"
-                  onSubmit={verifyOtp}
-                >
-                  <div className="flex justify-start flex-col gap-3">
-                    <label htmlFor="otp">OTP:</label>
-                    <input
-                      className="px-4 h-12 w-72 rounded-lg"
-                      placeholder="Enter OTP"
-                      type="text"
-                      id="otp"
-                      name="otp"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                    />
-                  </div>
-                  <input type="submit" value="Verify OTP" />
-                </form>
-              )}
             </div>
+          <Link
+          to="/register"
+          className="text-sm text-center mt-2 hover:text-red-600 text-blue-500 hover:underline font-semibold">
+          Not a user?
+          </Link>
           </main>
         </article>
       </section>

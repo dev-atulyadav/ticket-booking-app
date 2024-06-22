@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const userEmail = localStorage.getItem("userEmail");
+const userInfo = localStorage.getItem("userInfo");
 const initialState = {
-  isLoggedIn: userEmail == null ? false : true,
-  user: userEmail === null ? null : userEmail,
+  isLoggedIn: userInfo == null ? false : true,
+  user: userInfo === null ? null : userInfo,
 };
 
 const userSlice = createSlice({
@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     logout: (state) => {
-      localStorage.removeItem("userEmail")
+      localStorage.removeItem("userInfo")
       state.isLoggedIn = false;
       state.user = null;
     },

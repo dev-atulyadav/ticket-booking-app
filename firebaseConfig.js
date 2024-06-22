@@ -7,6 +7,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -30,9 +31,13 @@ const googleProvider = new GoogleAuthProvider();
 
 export {
   auth,
+  getAuth,
   googleProvider,
   signInWithPopup,
   RecaptchaVerifier,
   signInWithPhoneNumber,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword
+
 };
