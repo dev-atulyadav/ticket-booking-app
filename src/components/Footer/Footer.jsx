@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../../../public/logo.svg";
+import Logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AnchorLink from "react-anchor-link-smooth-scroll";

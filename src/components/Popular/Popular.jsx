@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Card from "../Home/Card";
 import { fetchDataFromApi } from "../../utils/api";
-import { Link } from "react-router-dom";
+import { setMovie } from "../../features/movie/movieSlice";
+import { useDispatch } from "react-redux";
 
 const Popular = () => {
-  const []= useState("")
   const [data, setData] = useState([]);
   const [inViewMovies, setInVeiwMovie] = useState(4);
   useEffect(() => {
@@ -16,6 +16,7 @@ const Popular = () => {
       )
     );
   }, []);
+  const dispatch = useDispatch();
 
   return (
     <section id="popularMovies" className="w-full">
@@ -28,7 +29,16 @@ const Popular = () => {
             data.map(
               (movie, index) =>
                 index < inViewMovies && (
-                  <div key={index} to={"details"} className="grid">
+                  <div
+                    onClick={() => {
+                      dispatch(setMovie(movie));
+                      console.log(movie);
+                      console.log("hi");
+                    }}
+                    key={index}
+                    to={"details"}
+                    className="grid"
+                  >
                     <Card movie={movie} />
                   </div>
                 )

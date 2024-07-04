@@ -30,7 +30,9 @@ const Card = ({ movie }) => {
             {movie.vote_average} out of 10
           </span>
         </p>
-        <Link className="mt-4 transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white">
+        <Link
+        to="/details"
+        className="mt-4 transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white">
           Book Now
         </Link>
       </div>
