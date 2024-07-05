@@ -5,6 +5,7 @@ import Footer from "./components/Footer/Footer";
 import SelectCity from "./components/Home/SelectCity";
 import { Alert } from "@mui/material";
 import { useSelector } from "react-redux";
+import SearchBox from "./components/Header/SearchBox";
 
 const App = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
@@ -35,18 +36,19 @@ const App = () => {
         <Header />
         {isLoggedIn && showAlert && (
           <Alert
-            className="absolute  top-14 bg-[#4fc14f]"
-            sx={{
-              bgcolor: "#4ade80",
-              borderRadius: "30px",
-            }}
-            variant="filled"
-            severity="success"
+          className="absolute  top-14 bg-[#4fc14f]"
+          sx={{
+            bgcolor: "#4ade80",
+            borderRadius: "30px",
+          }}
+          variant="filled"
+          severity="success"
           >
             You logged successfully!
           </Alert>
         )}
       </div>
+      <SearchBox/>
       {showLocOption && (
         <SelectCity handleShowLocOption={handleShowLocOption} />
       )}
