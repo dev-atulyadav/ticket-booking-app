@@ -26,7 +26,9 @@ const Nav = () => {
           </li>
         ))}
         <li className="">
-          <Link className="p-2 hover:bg-sky-400 duration-200 hover:text-white rounded-full border border-black hover:border-sky-400 flex justify-center items-center gap-1">
+          <Link
+          to="search"
+          className="p-2 hover:bg-sky-400 duration-200 hover:text-white rounded-full border border-black hover:border-sky-400 flex justify-center items-center gap-1">
             <p>Search</p>
             <IoSearch className="text-xl" />
           </Link>

@@ -4,6 +4,7 @@ import Home from "../components/Home/Home";
 import MovieDetails from "../components/Details/MovieDetails";
 import Signup from "../components/Forms/Signup";
 import Login from "../components/Forms/Login";
+import SearchBox from "../components/Header/SearchBox";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
         path: "/details",
         element: <MovieDetails />,
       },
+      {
+        path: "/search",
+        element: <SearchBox />,
+      }
     ],
   },
 ]);

@@ -5,7 +5,6 @@ import Footer from "./components/Footer/Footer";
 import SelectCity from "./components/Home/SelectCity";
 import { Alert } from "@mui/material";
 import { useSelector } from "react-redux";
-import SearchBox from "./components/Header/SearchBox";
 
 const App = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
@@ -48,7 +47,6 @@ const App = () => {
           </Alert>
         )}
       </div>
-      <SearchBox/>
       {showLocOption && (
         <SelectCity handleShowLocOption={handleShowLocOption} />
       )}
