@@ -22,9 +22,9 @@ const SearchRespose = ({ data }) => {
                   />
                 </div>
                 <div>
-                  {movie.original_title===undefined?
+                  {movie.title===undefined?
                     <h2>{movie.original_name}</h2>:
-                    <h2>{movie.original_title}</h2>
+                    <h2>{movie.title}</h2>
                   
                   }
                   {/* <p>{movie.overview}</p> */}

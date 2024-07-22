@@ -18,9 +18,9 @@ const SelectCity = ({ handleShowLocOption }) => {
   const handleCity = (city) => {
     setUserCity(city);
     setShowList(false);
-    localStorage.setItem("userLocation",city)
+    localStorage.setItem("userLocation", city);
     states.map((state) => {
-      if (state.city===city) {
+      if (state.city === city) {
         !handleShowLocOption(state.city) && setShowErr(false);
       }
     });
@@ -30,7 +30,7 @@ const SelectCity = ({ handleShowLocOption }) => {
     setShowList(true);
   };
   return (
-    <section className="flex pt-10 justify-start items-center flex-col w-full h-full absolute z-40 bg-[#b8b8b856] backdrop-blur-[3px]">
+    <section className="flex pt-10 justify-start items-center flex-col w-full h-full absolute z-50 bg-[#b8b8b856] backdrop-blur-[3px]">
       <article className="w-[55vw] flex justify-center items-center flex-col gap-6">
         <h2 className="self-start font-bold text-3xl">Select Your City</h2>
         <div className="relative flex justify-center items-center gap-4">

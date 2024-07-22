@@ -3,32 +3,41 @@ import { MdManageSearch } from "react-icons/md";
 import { fetchDataFromApi } from "../../utils/api";
 import SearchRespose from "../Details/SearchRespose";
 import SearchIllustration from "../../assets/search.svg";
+import ErrorIllustration from "../../assets/error.svg";
 import { MutatingDots } from "react-loader-spinner";
 
 const SearchBox = () => {
   const [search, setSearch] = useState("");
   const [searchCount, setSearchCount] = useState(0);
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [searchError, setSearchError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let url = `/search/multi?query=${search}`;
     if (search != "") {
-      fetchDataFromApi(url).then((res) =>
-        console.log(
-          res.results,
-          setData(res.results == undefined ? [] : res.results)
-        )
-      );
+      fetchDataFromApi(url).then((res) => {
+        setData(res.results == undefined ? [] : res.results);
+        if (res.results.length == 0) {
+          setError(true);
+          setIsLoading(false);
+        }
+        if (res.results.length > 0) {
+          setTimeout(() => {
+            setSearchCount(searchCount + 1);
+            setIsLoading(false);
+            setError(false)
+          }, 1500);
+        }
+      });
     }
-  }, [searchCount]);
+  }, [isLoading]);
   return (
-    <section className={` w-full  relative z-40 pt-28 flex flex-col justify-center items-center ${
-     searchCount!=0 &&
-      "justify-start"}`}>
+    <section
+      className={` w-full  relative z-40 pt-28 flex flex-col justify-center items-center ${
+        searchCount != 0 && "justify-start"
+      }`}
+    >
       <article>
         <div className="absolute top-0 left-0 flex flex-col items-center justify-center h-28 w-full bg-gray-200 shadow-sm shadow-gray-600 p-4">
           <h1 className="text-2xl font-bold text-gray-800">
@@ -47,7 +56,8 @@ const SearchBox = () => {
             <button
               onClick={() => {
                 if (search != "") {
-                  setSearchCount(searchCount + 1);
+                  setData(null);
+                  setSearchCount(0);
                   setIsLoading(true);
                 }
               }}
@@ -58,23 +68,56 @@ const SearchBox = () => {
           </div>
         </div>
       </article>
-      {searchCount != 0 ? (
-        
-          <SearchRespose data={data} />
-          
-       
+      {searchCount != 0 && !error ? (
+        <SearchRespose data={data} />
       ) : (
-        <span className="flex p-20 flex-col justify-center items-center">
-          <img
-            src={SearchIllustration}
-            loading="lazy"
-            fetchPriority="high"
-            alt="can't load"
-          />
-          <p className="text-xl font-semibold">
-            Search Your Favourite movies here!
-          </p>
-        </span>
+        <div className="flex justify-center items-center h-[60vh]">
+          {isLoading ? (
+            <span className="text-xl font-semibold text-gray-500">
+              <MutatingDots
+                visible={true}
+                height="100"
+                width="100"
+                color="gray"
+                secondaryColor="gray"
+                radius="12.5"
+                ariaLabel="mutating-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+              <p>Just a sec...</p>
+            </span>
+          ) : (
+            <>
+              {!error ? (
+                <span className="hi p-20 flex-col justify-center items-center">
+                  <img
+                    src={SearchIllustration}
+                    loading="lazy"
+                    fetchPriority="high"
+                    alt="can't load"
+                  />
+                  <p className="text-xl font-semibold">
+                    Search Your Favourite movies here!
+                  </p>
+                </span>
+              ) : (
+                <span className="flex p-20 flex-col justify-center items-center">
+                  <img
+                    className="scale-110 h-96"
+                    src={ErrorIllustration}
+                    loading="lazy"
+                    fetchPriority="high"
+                    alt="can't load"
+                  />
+                  <p className="text-xl font-semibold">
+                    Unable to find any results...
+                  </p>
+                </span>
+              )}
+            </>
+          )}
+        </div>
       )}
     </section>
   );
