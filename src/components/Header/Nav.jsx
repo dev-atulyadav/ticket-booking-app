@@ -11,7 +11,7 @@ const Nav = () => {
   return (
     <nav
       className={`flex justify-center items-center ${
-        isLoggedIn ? "gap-6" : "gap-14"
+        isLoggedIn ? "gap-6" : "gap-2 md:gap-14 "
       }`}
     >
       <ul className="hidden md:flex justify-center items-center gap-6 font-semibold uppercase relative">
@@ -34,6 +34,11 @@ const Nav = () => {
           </Link>
         </li>
       </ul>
+          <Link
+          to="search"
+          className="p-2 hover:bg-sky-400 duration-200 hover:text-white rounded-full border border-black hover:border-sky-400">
+            <IoSearch className="text-xl" />
+          </Link>
       {isLoggedIn ? <Logout /> : <UserBtn />}
     </nav>
   );

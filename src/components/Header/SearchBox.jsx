@@ -14,7 +14,7 @@ const SearchBox = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    let url = `/search/multi?query=${search}`;
+    let url = `/search/movie?query=${search}`;
     if (search != "") {
       fetchDataFromApi(url).then((res) => {
         setData(res.results == undefined ? [] : res.results);
@@ -39,7 +39,7 @@ const SearchBox = () => {
       }`}
     >
       <article>
-        <div className="absolute top-0 left-0 flex flex-col items-center justify-center h-28 w-full bg-gray-200 shadow-sm shadow-gray-600 p-4">
+        <div className="absolute top-0 left-0 flex flex-col items-center justify-center h-28 w-full bg-gray-200 shadow-sm shadow-gray-600 p-4 gap-2">
           <h1 className="text-2xl font-bold text-gray-800">
             Search for a movie
           </h1>
@@ -48,7 +48,7 @@ const SearchBox = () => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="w-[50%] h-10 rounded-lg bg-gray-100 p-2 mt
+              className="sm:w-[50%] h-10 rounded-lg bg-gray-100 p-2 mt
             -4"
               type="text"
               placeholder="Search for a movie"
