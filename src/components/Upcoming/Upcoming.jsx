@@ -3,6 +3,7 @@ import { fetchDataFromApi } from "../../utils/api";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setMovie } from "../../features/movie/movieSlice";
+import DefaultPoster from "../../assets/default_poster.svg"
 
 const Upcoming = () => {
   const [data, setData] = useState([]);
@@ -35,8 +36,11 @@ const Upcoming = () => {
                 className="flex gap-2 flex-col justify- items-center rounded-lg relative cursor-pointer shadow-xl shadow-[#00000044] pb-4"
               >
                 <img
-                  src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                  className="h-40 w-full rounded-t"
+                  src={
+                    movie.poster_path!=null ?
+                    `http://image.tmdb.org/t/p/w500/${movie.poster_path}`:DefaultPoster
+                  }
+                  className="h-40 w-full rounded-t border-b"
                   alt="can't load"
                 />
                 <h3 className="text-xs uppercase font-semibold text-center">

@@ -17,7 +17,7 @@ const SearchBox = () => {
     let url = `/search/movie?query=${search}`;
     if (search != "") {
       fetchDataFromApi(url).then((res) => {
-        setData(res.results == undefined ? [] : res.results);
+        setData(res.results == undefined ? [] : res);
         if (res.results.length == 0) {
           setError(true);
           setIsLoading(false);
@@ -32,6 +32,14 @@ const SearchBox = () => {
       });
     }
   }, [isLoading]);
+  const handleSerch = (e) => {
+    e.preventDefault();
+    if (search != "") {
+      setData(null);
+      setSearchCount(0);
+      setIsLoading(true);
+    }
+  }
   return (
     <section
       className={` w-full  relative z-40 pt-28 flex flex-col justify-center items-center ${
@@ -43,29 +51,23 @@ const SearchBox = () => {
           <h1 className="text-2xl font-bold text-gray-800">
             Search for a movie
           </h1>
-          <div className="flex justify-center items-center w-full gap-4">
+          <form onSubmit={handleSerch} className="flex justify-center items-center w-full gap-4">
             <input
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="sm:w-[50%] h-10 rounded-lg bg-gray-100 p-2 mt
+              className="sm:w-[50%] h-10 rounded-lg bg-white p-2 mt
             -4"
               type="text"
               placeholder="Search for a movie"
             />
             <button
-              onClick={() => {
-                if (search != "") {
-                  setData(null);
-                  setSearchCount(0);
-                  setIsLoading(true);
-                }
-              }}
+              onClick={handleSerch}
               className="text-3xl h-10 w-10 flex justify-center items-center rounded-full bg-white hover:bg-cyan-300 hover:text-white duration-200"
             >
               <MdManageSearch />
             </button>
-          </div>
+          </form>
         </div>
       </article>
       {searchCount != 0 && !error ? (
