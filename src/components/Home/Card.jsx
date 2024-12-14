@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { setMovie } from "../../features/movie/movieSlice";
 
 const Card = ({ movie }) => {
   return (
@@ -30,9 +32,12 @@ const Card = ({ movie }) => {
             {movie.vote_average} out of 10
           </span>
         </p>
-        <Link
-        to="/details"
-        className="mt-4 transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white">
+        <Link target="_blank"
+          to={`/details/${movie.original_title.replace(/[ ]/g, "+")}/${
+            movie.id
+          }`}
+          className="mt-4 transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white"
+        >
           Book Now
         </Link>
       </div>

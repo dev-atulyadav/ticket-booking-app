@@ -5,19 +5,23 @@ import SearchRespose from "../Details/SearchRespose";
 import SearchIllustration from "../../assets/search.svg";
 import ErrorIllustration from "../../assets/error.svg";
 import { MutatingDots } from "react-loader-spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { setResult } from "../../features/searchResult/resultSlice";
 
 const SearchBox = () => {
+  const result = useSelector((state) => state.result);
   const [search, setSearch] = useState("");
-  const [searchCount, setSearchCount] = useState(0);
-  const [data, setData] = useState(null);
+  const [searchCount, setSearchCount] = useState(result.results?.length);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  console.log(result);
 
   useEffect(() => {
     let url = `/search/movie?query=${search}`;
     if (search != "") {
       fetchDataFromApi(url).then((res) => {
-        setData(res.results == undefined ? [] : res);
+        dispatch(setResult(res.results == undefined ? [] : res));
         if (res.results.length == 0) {
           setError(true);
           setIsLoading(false);
@@ -26,7 +30,7 @@ const SearchBox = () => {
           setTimeout(() => {
             setSearchCount(searchCount + 1);
             setIsLoading(false);
-            setError(false)
+            setError(false);
           }, 1500);
         }
       });
@@ -35,11 +39,10 @@ const SearchBox = () => {
   const handleSerch = (e) => {
     e.preventDefault();
     if (search != "") {
-      setData(null);
       setSearchCount(0);
       setIsLoading(true);
     }
-  }
+  };
   return (
     <section
       className={` w-full  relative z-40 pt-28 flex flex-col justify-center items-center ${
@@ -51,7 +54,10 @@ const SearchBox = () => {
           <h1 className="text-2xl font-bold text-gray-800">
             Search for a movie
           </h1>
-          <form onSubmit={handleSerch} className="flex justify-center items-center w-full gap-4">
+          <form
+            onSubmit={handleSerch}
+            className="flex justify-center items-center w-full gap-4"
+          >
             <input
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -71,7 +77,7 @@ const SearchBox = () => {
         </div>
       </article>
       {searchCount != 0 && !error ? (
-        <SearchRespose data={data} />
+        <SearchRespose data={result} />
       ) : (
         <div className="flex justify-center items-center h-[60vh]">
           {isLoading ? (
@@ -96,7 +102,7 @@ const SearchBox = () => {
                   <img
                     src={SearchIllustration}
                     loading="lazy"
-                    fetchPriority="high"
+                    // fetchPriority="high"
                     alt="can't load"
                   />
                   <p className="text-xl font-semibold">

@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: "/details",
+        path: "/details/:moveName/:id",
         element: <MovieDetails />,
       },
       {

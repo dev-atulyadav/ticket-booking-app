@@ -10,7 +10,8 @@ const movieSlice = createSlice({
       Object.assign(state, action.payload);
     },
   },
-});
+}
+);
 
 export const { setMovie } = movieSlice.actions;
 export default movieSlice.reducer;
