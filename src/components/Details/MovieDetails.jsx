@@ -48,25 +48,25 @@ const MovieDetails = () => {
         <section>
           <article className="flex flex-col gap-4 m-4 justify-center items-center">
             <main className="flex justify-center items-start flex-col gap-6">
-              <div className=" py-4 overflow-hidden relative flex justify-start items-center w-[96vw] bg-[#000000d0] rounded-lg">
+              <div className=" py-4 overflow-hidden flex-col sm:flex-row relative flex justify-start gap-6 items-center w-[96vw] bg-black rounded-lg">
                 <img
-                  className="h-56 w- rounded-lg relative z-10 ml-12"
+                  className="h-56 w- rounded-lg relative z-10 sm:ml-12"
                   src={`http://image.tmdb.org/t/p/w500/${details.poster_path}`}
                   alt={details.title}
                 />
-                <div className="text-3xl flex flex-col gap-4 uppercase font-bold text-white z-10 ml-12">
+                <div className="text-3xl flex flex-col justify-center items-center gap-4 uppercase font-bold text-center text-white z-10 sm:items-start">
                   <h1>{details.title}</h1>
-                  <div className="flex gap-4">
+                  <div className="flex justify-center items-center sm:flex-row flex-col gap-4">
                     <span className="text-2xl font-semibold text-yellow-400">
                       {details.vote_average}/10
                     </span>
-                    <button className="hover:bg-green-500 border border-green-500 text-green-500 hover:text-white duration-150 font-semibold text-xl rounded px-2">
+                    <button className="transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white">
                       Book Now
                     </button>
                   </div>
                 </div>
                 <div
-                  className="w-full absolute h-full bg-cover i bg-no-repeat overflow-hidden opacity-50"
+                  className="w-screen top-0 h-screen absolute bg-cover bg-no-repeat opacity-50"
                   style={{
                     backgroundImage: `url(http://image.tmdb.org/t/p/w500/${details.backdrop_path})`,
                     backgroundPosition: "center -12rem",

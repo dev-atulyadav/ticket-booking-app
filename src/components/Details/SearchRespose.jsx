@@ -10,7 +10,7 @@ const SearchRespose = ({ data }) => {
       <span className="flex flex-col justify-center items-center gap-4">
         <h1 className="text-4xl font-semibold">Search Results</h1>
         <p className="text-xl">Total results: {data.total_results}</p>
-        <Pagination pages={data.total_pages} />
+        {/* <Pagination pages={data.total_pages} /> */}
       </span>
       <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 ">
         {data != null &&
@@ -20,7 +20,7 @@ const SearchRespose = ({ data }) => {
               className="flex flex-col justify-center items-center text-center"
               key={index}
             >
-              <Link
+              <Link target="_blank"
                 to={`/details/${movie.original_title.replace(/[ ]/g, "+")}/${
                   movie.id
                 }`}
@@ -50,7 +50,7 @@ const SearchRespose = ({ data }) => {
             </li>
           ))}
       </ul>
-      <Pagination pages={data.total_pages} />
+      {/* <Pagination pages={data.total_pages} /> */}
     </article>
   );
 };
