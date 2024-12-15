@@ -27,8 +27,8 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      dispatch(login(email));
-      localStorage.setItem("userInfo", email);
+      dispatch(login(auth.currentUser.email));
+      localStorage.setItem("userInfo", auth.currentUser.email);
     } catch (error) {
       alert("Error logging in: " + error.message);
     }
@@ -37,9 +37,8 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      console.log(googleProvider.providerId);
-      dispatch(login(googleProvider.providerId));
-      localStorage.setItem("userInfo", googleProvider.providerId);
+      dispatch(login(auth.currentUser.email));
+      localStorage.setItem("userInfo", auth.currentUser.email);
       // alert("Login successful");
     } catch (error) {
       alert("Error logging in: " + error.message);
@@ -73,7 +72,7 @@ const Login = () => {
       await confirmationResult.confirm(otp);
       alert("Phone Login successful");
       dispatch(login(phone));
-      localStorage.setItem("userInfo", phone);
+      localStorage.setItem("userInfo", auth.currentUser.phoneNumber);
     } catch (error) {
       alert("Error verifying OTP: " + error.message);
     }
@@ -145,7 +144,7 @@ const Login = () => {
                       onChange={(e) => setPhone(e.target.value)}
                       required
                     />
-                  <div id="recaptcha-container"></div>
+                    <div id="recaptcha-container"></div>
                   </div>
                   <button
                     type="submit"
@@ -199,11 +198,12 @@ const Login = () => {
                 </button>
               </div>
             </div>
-          <Link
-          to="/register"
-          className="text-sm text-center mt-2 hover:text-red-600 text-blue-500 hover:underline font-semibold">
-          Not a user?
-          </Link>
+            <Link
+              to="/register"
+              className="text-sm text-center mt-2 hover:text-red-600 text-blue-500 hover:underline font-semibold"
+            >
+              Not a user?
+            </Link>
           </main>
         </article>
       </section>

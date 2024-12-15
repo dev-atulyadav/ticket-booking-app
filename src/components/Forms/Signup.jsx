@@ -26,8 +26,8 @@ function Signup() {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      dispatch(login(email));
-      localStorage.setItem("userInfo", email);
+      dispatch(login(auth.currentUser.email));
+      localStorage.setItem("userInfo", auth.currentUser.email);
       console.log("User registered successfully");
     } catch (error) {
       console.error("Error registering user:", error.message);
@@ -38,8 +38,8 @@ function Signup() {
     const googleProvider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, googleProvider);
-      dispatch(login(googleProvider.providerId));
-      localStorage.setItem("userInfo", googleProvider.providerId);
+      dispatch(login(auth.currentUser.email));
+      localStorage.setItem("userInfo", auth.currentUser.email);
       console.log("User registered with Google successfully");
     } catch (error) {
       console.error("Error registering with Google:", error.message);
@@ -72,8 +72,8 @@ function Signup() {
     try {
       await confirmationResult.confirm(otp);
       alert("Phone Login successful");
-      localStorage.setItem("userInfo", phoneNumber);
-      dispatch(login(phone));
+      localStorage.setItem("userInfo", auth.currentUser.phoneNumber);
+      dispatch(login(auth.currentUser.phoneNumber));
     } catch (error) {
       alert("Error verifying OTP: " + error.message);
     }

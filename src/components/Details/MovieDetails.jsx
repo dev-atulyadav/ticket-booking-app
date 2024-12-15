@@ -4,14 +4,16 @@ import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 import { setMovie } from "../../features/movie/movieSlice";
 import { MagnifyingGlass } from "react-loader-spinner";
+import { db, auth } from "../../../firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
+import { Alert } from "@mui/material";
 
 const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLogged, setIsLogged] = useState(true);
   const dispatch = useDispatch();
   const [details, setDetails] = useState({});
-  console.log(details);
   const { id } = useParams();
-  console.log(id);
   useEffect(() => {
     let url = `/movie/${id}`;
     fetchDataFromApi(url).then((res) => {
@@ -24,9 +26,48 @@ const MovieDetails = () => {
       }
     });
   }, []);
+  console.log(auth.currentUser);
+
+  const handleBookTicket = async (e) => {
+    e.preventDefault();
+    if (!auth.currentUser) {
+      setIsLogged(false);
+      setTimeout(() => {
+        setIsLogged(true);
+      }, 3000);
+      return;
+    }
+    const movie = {
+      movieId: id,
+      movieName: details.title,
+      moviePoster: details.poster_path,
+    };
+    const user = auth.currentUser.email;
+    const booking = {
+      movie,
+      user,
+    };
+    const docRef = await addDoc(collection(db, "bookings"), booking);
+    console.log("Document written with ID: ", docRef.id);
+  };
 
   return (
     <>
+      {!isLogged && (
+        <div className="w-screen top-14 absolute flex justify-center items-center z-20">
+          <Alert
+            className=" bg-[#ff1f1f]"
+            sx={{
+              bgcolor: "red",
+              borderRadius: "30px",
+            }}
+            variant="filled"
+            severity="error"
+          >
+            Please login to book a ticket!
+          </Alert>
+        </div>
+      )}
       {isLoading ? (
         <div className="flex justify-center items-center h-[60vh]">
           <span className="text-xl font-semibold text-gray-500">
@@ -60,7 +101,10 @@ const MovieDetails = () => {
                     <span className="text-2xl font-semibold text-yellow-400">
                       {details.vote_average}/10
                     </span>
-                    <button className="transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white">
+                    <button
+                      onClick={handleBookTicket}
+                      className="transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white"
+                    >
                       Book Now
                     </button>
                   </div>

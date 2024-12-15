@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { setMovie } from "../../features/movie/movieSlice";
 
 const Card = ({ movie }) => {
   return (

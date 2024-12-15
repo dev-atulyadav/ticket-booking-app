@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,14 +22,14 @@ const firebaseConfig = {
   storageBucket: "ticket-booking-app-8c76e.appspot.com",
   messagingSenderId: "563996198666",
   appId: "1:563996198666:web:d26bdc4d30b75441bc9cf3",
-  databaseURL: "https://ticket-booking-app-8c76e-default-rtdb.firebaseio.com",
+  // databaseURL: "https://ticket-booking-app-8c76e-default-rtdb.firebaseio.com",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
-
+const db = getFirestore(app);
 export {
   auth,
   getAuth,
@@ -38,6 +39,6 @@ export {
   signInWithPhoneNumber,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword
-
+  createUserWithEmailAndPassword,
+  db,
 };

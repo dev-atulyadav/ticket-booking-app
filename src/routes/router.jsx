@@ -5,6 +5,7 @@ import MovieDetails from "../components/Details/MovieDetails";
 import Signup from "../components/Forms/Signup";
 import Login from "../components/Forms/Login";
 import SearchBox from "../components/Header/SearchBox";
+import MyTickets from "../components/Tickets/MyTickets";
 
 export const router = createBrowserRouter([
   {
@@ -14,16 +15,16 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-        children:[
+        children: [
           {
             path: "/login",
-            element: <Login />
+            element: <Login />,
           },
           {
-            path:"/register",
-            element: <Signup />
-          }
-        ]
+            path: "/register",
+            element: <Signup />,
+          },
+        ],
       },
       {
         path: "/details/:moveName/:id",
@@ -32,7 +33,11 @@ export const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchBox />,
-      }
+      },
+      {
+        path: "/my-tickets",
+        element: <MyTickets />,
+      },
     ],
   },
 ]);
