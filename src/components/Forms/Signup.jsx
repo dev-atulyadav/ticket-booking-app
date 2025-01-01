@@ -6,11 +6,13 @@ import {
   GoogleAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber,
+  db,
 } from "../../../firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { login } from "../../features/user/userSlice";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 function Signup() {
   const { user, isLoggedIn } = useSelector((state) => state.user);
@@ -38,7 +40,16 @@ function Signup() {
     const googleProvider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, googleProvider);
-      dispatch(login(auth.currentUser.email));
+      dispatch(login(auth.currentUser));
+      const user = {
+        email: auth.currentUser.email,
+        displayName: auth.currentUser.displayName,
+        photoURL: auth.currentUser.photoURL,
+        phoneNumber: auth.currentUser.phoneNumber,
+        gender: "Not Specified",
+        city: localStorage.getItem("userLocation"),
+      };
+      await addDoc(collection(db, "users"), user);
       localStorage.setItem("userInfo", auth.currentUser.email);
       console.log("User registered with Google successfully");
     } catch (error) {

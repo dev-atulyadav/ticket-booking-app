@@ -6,6 +6,7 @@ import Signup from "../components/Forms/Signup";
 import Login from "../components/Forms/Login";
 import SearchBox from "../components/Header/SearchBox";
 import MyTickets from "../components/Tickets/MyTickets";
+import UserProfile from "../components/Header/User/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "/my-tickets",
         element: <MyTickets />,
+      },
+      {
+        path: "/my-profile",
+        element: <UserProfile />,
       },
     ],
   },

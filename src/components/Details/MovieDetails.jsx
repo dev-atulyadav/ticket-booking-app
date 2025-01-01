@@ -129,7 +129,7 @@ const MovieDetails = () => {
                   </span>
                   <span>
                     <h2 className="text-xl font-bold">Average Vote</h2>
-                    <p className="font-semibold">{details.vote_average}</p>
+                    <p className="font-semibold">{Math.ceil(details.vote_average)}</p>
                   </span>
                 </div>
               </div>

@@ -6,7 +6,6 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 
 const Footer = () => {
   const footerLinks = useSelector((state) => state.footerLinks);
-  console.log(footerLinks);
   return (
     <footer className="my-8 border-t-2 border-dashed border-black p-5">
       <article className="flex w-[90vw] sm:w-auto flex-col justify-center items-center gap-5">

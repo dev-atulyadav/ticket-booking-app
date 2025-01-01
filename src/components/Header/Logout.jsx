@@ -5,7 +5,6 @@ import { logout } from "../../features/user/userSlice";
 import { auth } from "../../../firebaseConfig";
 
 const Logout = () => {
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
     <article className="flex justify-center items-center flex-col mr-4">

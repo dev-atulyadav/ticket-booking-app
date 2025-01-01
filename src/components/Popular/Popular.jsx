@@ -10,10 +10,7 @@ const Popular = () => {
   useEffect(() => {
     let url = "/movie/popular?language=en-US&page=1&region=IN";
     fetchDataFromApi(url).then((res) =>
-      console.log(
-        res.results,
-        setData(!res.results == undefined ? [] : res.results)
-      )
+      setData(!res.results == undefined ? [] : res.results)
     );
   }, []);
   const dispatch = useDispatch();
@@ -32,8 +29,6 @@ const Popular = () => {
                   <div
                     onClick={() => {
                       dispatch(setMovie(movie));
-                      console.log(movie);
-                      console.log("hi");
                     }}
                     key={index}
                     to={"details"}
