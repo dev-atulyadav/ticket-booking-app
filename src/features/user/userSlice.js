@@ -4,6 +4,7 @@ const userInfo = localStorage.getItem("userInfo");
 const initialState = {
   isLoggedIn: userInfo == null ? false : true,
   user: userInfo === null ? null : userInfo,
+  tickets: [],
 };
 
 const userSlice = createSlice({
@@ -19,8 +20,16 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
     },
+    addTicket: (state, action) => {
+      state.tickets.push(action.payload);
+    },
+    removeTicket: (state, action) => {
+      state.tickets = state.tickets.filter(
+        (ticket) => ticket.movieId !== action.payload
+      );
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, addTicket, removeTicket } = userSlice.actions;
 export default userSlice.reducer;

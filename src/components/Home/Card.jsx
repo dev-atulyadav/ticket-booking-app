@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 const Card = ({ movie }) => {
   return (
     <Link
-      target="_blank"
       to={`/details/${movie.original_title.replace(/[ ]/g, "+")}/${movie.id}`}
       className="w-60 flex flex-col justify-start items-center gap-4 cursor-pointer shadow-xl shadow-[#00000057] rounded-xl"
     >

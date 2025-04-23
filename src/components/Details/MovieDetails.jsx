@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 import { setMovie } from "../../features/movie/movieSlice";
@@ -7,10 +7,12 @@ import { MagnifyingGlass } from "react-loader-spinner";
 import { db, auth } from "../../../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { Alert } from "@mui/material";
+import { addTicket } from "../../features/user/userSlice";
 
 const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLogged, setIsLogged] = useState(true);
+  const { tickets } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [details, setDetails] = useState({});
   const { id } = useParams();
@@ -26,31 +28,43 @@ const MovieDetails = () => {
       }
     });
   }, []);
-  console.log(auth.currentUser);
+  // console.log(auth.currentUser);
 
-  const handleBookTicket = async (e) => {
-    e.preventDefault();
-    if (!auth.currentUser) {
-      setIsLogged(false);
-      setTimeout(() => {
-        setIsLogged(true);
-      }, 3000);
-      return;
-    }
-    const movie = {
-      movieId: id,
-      movieName: details.title,
-      moviePoster: details.poster_path,
-    };
-    const user = auth.currentUser.email;
-    const booking = {
-      movie,
-      user,
-    };
-    const docRef = await addDoc(collection(db, "bookings"), booking);
-    console.log("Document written with ID: ", docRef.id);
+  // const handleBookTicket = async (e) => {
+  //   e.preventDefault();
+  //   if (!auth.currentUser) {
+  //     setIsLogged(false);
+  //     setTimeout(() => {
+  //       setIsLogged(true);
+  //     }, 3000);
+  //     return;
+  //   }
+  //   const movie = {
+  //     movieId: id,
+  //     movieName: details.title,
+  //     moviePoster: details.poster_path,
+  //   };
+  //   const user = auth.currentUser.email;
+  //   const booking = {
+  //     movie,
+  //     user,
+  //   };
+  //   const docRef = await addDoc(collection(db, "bookings"), booking);
+  //   console.log("Document written with ID: ", docRef.id);
+  // };
+
+  const handleBookTicket = () => {
+    dispatch(
+      addTicket({
+        movieId: id,
+        movieName: details.title,
+        moviePoster: details.poster_path,
+        user: auth.currentUser.email,
+      })
+    );
+    console.log(details);
   };
-
+  console.log(tickets);
   return (
     <>
       {!isLogged && (
@@ -129,7 +143,9 @@ const MovieDetails = () => {
                   </span>
                   <span>
                     <h2 className="text-xl font-bold">Average Vote</h2>
-                    <p className="font-semibold">{Math.ceil(details.vote_average)}</p>
+                    <p className="font-semibold">
+                      {Math.ceil(details.vote_average)}
+                    </p>
                   </span>
                 </div>
               </div>

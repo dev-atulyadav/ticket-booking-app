@@ -4,7 +4,7 @@ const initialState = [
   {
     id: nanoid(),
     name: "E-tickets",
-    path: "/",
+    path: "/view-seats",
   },
   {
     id: nanoid(),
