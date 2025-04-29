@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 import { setMovie } from "../../features/movie/movieSlice";
 import { MagnifyingGlass } from "react-loader-spinner";
@@ -115,12 +115,12 @@ const MovieDetails = () => {
                     <span className="text-2xl font-semibold text-yellow-400">
                       {details.vote_average}/10
                     </span>
-                    <button
-                      onClick={handleBookTicket}
+                    <Link
+                      to={`/view-seats/${details.title.replace(/ /g, "-")}/${id}`}
                       className="transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white"
                     >
                       Book Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
                 <div

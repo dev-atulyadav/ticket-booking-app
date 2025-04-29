@@ -8,12 +8,18 @@ import SearchBox from "../components/Header/SearchBox";
 import MyTickets from "../components/Tickets/MyTickets";
 import UserProfile from "../components/Header/User/UserProfile";
 import ViewSeats from "../components/ViewSeats/ViewSeats";
+import HelpSupport from "../components/Help&Support/HelpSupport";
+import ErrorPage from "../components/Error/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
       {
         path: "/",
         element: <Home />,
@@ -45,8 +51,12 @@ export const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: "/view-seats",
+        path: "/view-seats/:movieName/:id",
         element: <ViewSeats />,
+      },
+      {
+        path: "/help&support",
+        element: <HelpSupport />,
       },
     ],
   },

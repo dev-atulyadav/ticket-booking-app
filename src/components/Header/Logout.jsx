@@ -3,9 +3,11 @@ import { FaPowerOff } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/user/userSlice";
 import { auth } from "../../../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <article className="flex justify-center items-center flex-col mr-4">
       <button
@@ -13,7 +15,7 @@ const Logout = () => {
           dispatch(logout());
           auth.signOut();
           localStorage.removeItem("isLogged");
-          window.location.href = "/login";
+          navigate("/login");
         }}
         className="flex justify-center items-center gap-2 border p-2 rounded-lg border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-200"
       >

@@ -26,7 +26,9 @@ const SelectCity = ({ handleShowLocOption }) => {
     });
   };
   const handleInput = (e) => {
-    setUserCity(e.target.value);
+    const capitalize =
+      e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+    setUserCity(capitalize);
     setShowList(true);
   };
   return (

@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { setMovieSeat } from "../../features/movie/moiveSeatSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ViewSeats = () => {
+  const { movieName, id } = useParams();
+  const dispatch = useDispatch();
+  const movieSeat = useSelector((state) => state.movieSeat);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
   const handleSeatClick = (seat) => {
@@ -11,7 +17,15 @@ const ViewSeats = () => {
     }
     setIsSelected(!isSelected);
   };
-  console.log(selectedSeats);
+  const isMovieStored = movieSeat.find((movie) => movie.id === id);
+  useEffect(() => {
+    if (isMovieStored) {
+      dispatch(setSelectedSeats(isMovieStored.selectedSeats));
+    } else {
+      dispatch(setMovieSeat([...movieSeat]));
+    }
+  }, []);
+  console.log(movieSeat);
   return (
     <section className="p-10">
       <div className="grid grid-cols-12 gap-4">
