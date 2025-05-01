@@ -4,6 +4,7 @@ import { removeTicket } from "../../features/user/userSlice";
 import { Link } from "react-router-dom";
 
 const MyTickets = () => {
+  const user = JSON.parse(localStorage.getItem("userInfo"));
   const { tickets } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   console.log(tickets);
@@ -13,13 +14,21 @@ const MyTickets = () => {
         <div className="flex flex-col items-center justify-center gap-2 w-full h-full">
           <p className="text-2xl text-center font-bold">No tickets found</p>
           <p className="text-center font-bold">
-            Book a ticket to see your tickets here
+            Book a ticket to see them here
           </p>
-          <Link to="/">
-            <button className="hover:bg-blue-500 transition-all duration-300 border border-blue-400 text-blue-400 px-4 py-2 rounded-md hover:text-white font-semibold">
-              Book a ticket
-            </button>
-          </Link>
+          {user ? (
+            <Link to="/">
+              <button className="hover:bg-blue-500 transition-all duration-300 border border-blue-400 text-blue-400 px-4 py-2 rounded-md hover:text-white font-semibold">
+                Book a ticket
+              </button>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <button className=" transition-all duration-300 hover:underline text-blue-400 px-4 py-2 rounded-md hover:text-blue-500 font-semibold">
+                Please login to book a ticket
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     );

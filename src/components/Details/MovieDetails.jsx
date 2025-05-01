@@ -4,8 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../../utils/api";
 import { setMovie } from "../../features/movie/movieSlice";
 import { MagnifyingGlass } from "react-loader-spinner";
-import { db, auth } from "../../../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
 import { Alert } from "@mui/material";
 import { addTicket } from "../../features/user/userSlice";
 
@@ -28,30 +26,6 @@ const MovieDetails = () => {
       }
     });
   }, []);
-  // console.log(auth.currentUser);
-
-  // const handleBookTicket = async (e) => {
-  //   e.preventDefault();
-  //   if (!auth.currentUser) {
-  //     setIsLogged(false);
-  //     setTimeout(() => {
-  //       setIsLogged(true);
-  //     }, 3000);
-  //     return;
-  //   }
-  //   const movie = {
-  //     movieId: id,
-  //     movieName: details.title,
-  //     moviePoster: details.poster_path,
-  //   };
-  //   const user = auth.currentUser.email;
-  //   const booking = {
-  //     movie,
-  //     user,
-  //   };
-  //   const docRef = await addDoc(collection(db, "bookings"), booking);
-  //   console.log("Document written with ID: ", docRef.id);
-  // };
 
   const handleBookTicket = () => {
     dispatch(
@@ -59,7 +33,7 @@ const MovieDetails = () => {
         movieId: id,
         movieName: details.title,
         moviePoster: details.poster_path,
-        user: auth.currentUser.email,
+        user: user.email,
       })
     );
     console.log(details);
@@ -116,7 +90,10 @@ const MovieDetails = () => {
                       {details.vote_average}/10
                     </span>
                     <Link
-                      to={`/view-seats/${details.title.replace(/ /g, "-")}/${id}`}
+                      to={`/view-seats/${details.title.replace(
+                        / /g,
+                        "-"
+                      )}/${id}`}
                       className="transition-all duration-500 text-sm sm:leading-5 sm:text-[16px] px-3 py-2.5 border rounded-lg uppercase font-semibold text-green-400 border-green-400 hover:bg-green-400 hover:text-white"
                     >
                       Book Now

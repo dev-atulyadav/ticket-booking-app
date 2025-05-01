@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { setMovieSeat } from "../../features/movie/moiveSeatSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ConfirmBooking from "./ConfirmBooking";
+import { toast } from "react-toastify";
 
 const ViewSeats = () => {
   const { movieName, id } = useParams();
@@ -9,6 +11,7 @@ const ViewSeats = () => {
   const movieSeat = useSelector((state) => state.movieSeat);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
+  const [closeConfirmBooking, setCloseConfirmBooking] = useState(false);
   const handleSeatClick = (seat) => {
     if (selectedSeats.includes(seat)) {
       setSelectedSeats(selectedSeats.filter((s) => s !== seat));
@@ -18,13 +21,13 @@ const ViewSeats = () => {
     setIsSelected(!isSelected);
   };
   const isMovieStored = movieSeat.find((movie) => movie.id === id);
-  useEffect(() => {
-    if (isMovieStored) {
-      dispatch(setSelectedSeats(isMovieStored.selectedSeats));
-    } else {
-      dispatch(setMovieSeat([...movieSeat]));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isMovieStored) {
+  //     dispatch(setSelectedSeats(isMovieStored.selectedSeats));
+  //   } else {
+  //     dispatch(setMovieSeat([...movieSeat]));
+  //   }
+  // }, []);
   console.log(movieSeat);
   return (
     <section className="p-10">
@@ -61,7 +64,7 @@ const ViewSeats = () => {
                 <div key={index} className="col-span-1">
                   {index >= 0 && index <= 29 && (
                     <button
-                      onClick={() => handleSeatClick(index + 1)}
+                      onClick={() => handleSeatClick("F" + (index + 1))}
                       className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-green-300 transition-all duration-300 hover:text-white ${
                         selectedSeats.includes(index + 1)
                           ? "bg-green-300 text-white"
@@ -74,9 +77,9 @@ const ViewSeats = () => {
 
                   {index >= 30 && index <= 59 && (
                     <button
-                      onClick={() => handleSeatClick(index + 1)}
+                      onClick={() => handleSeatClick("M" + (index + 1))}
                       className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-orange-300 transition-all duration-300 hover:text-white ${
-                        selectedSeats.includes(index + 1)
+                        selectedSeats.includes("M" + (index + 1))
                           ? "bg-orange-300 text-white"
                           : ""
                       }`}
@@ -86,9 +89,9 @@ const ViewSeats = () => {
                   )}
                   {index >= 60 && index <= 89 && (
                     <button
-                      onClick={() => handleSeatClick(index + 1)}
+                      onClick={() => handleSeatClick("B" + (index + 1))}
                       className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-sky-300 transition-all duration-300 hover:text-white ${
-                        selectedSeats.includes(index + 1)
+                        selectedSeats.includes("B" + (index + 1))
                           ? "bg-sky-300 text-white"
                           : ""
                       }`}
@@ -99,9 +102,32 @@ const ViewSeats = () => {
                 </div>
               ))}
             </div>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (selectedSeats.length === 0) {
+                  toast.error("Please select at least one seat", {
+                    position: "top-center",
+                    autoClose: 5000,
+                  });
+                  return;
+                }
+                setCloseConfirmBooking(true);
+              }}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            >
+              Confirm Booking
+            </button>
           </div>
         </div>
       </div>
+      {closeConfirmBooking && (
+        <ConfirmBooking
+          selectedSeats={selectedSeats}
+          onClose={() => setCloseConfirmBooking(false)}
+          movieId={id}
+        />
+      )}
     </section>
   );
 };

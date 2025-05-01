@@ -1,21 +1,17 @@
-import React, { useState } from "react";
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  db,
-} from "../../../firebaseConfig";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { login } from "../../features/user/userSlice";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { userRegistration } from "../../utils/action";
+import { toast, ToastContainer } from "react-toastify";
 
 function Signup() {
-  const { user, isLoggedIn } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
+  const { isLoggedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,70 +22,55 @@ function Signup() {
 
   const handleEmailPasswordRegistration = async (e) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      dispatch(login(auth.currentUser.email));
-      localStorage.setItem("userInfo", auth.currentUser.email);
-      console.log("User registered successfully");
-    } catch (error) {
-      console.error("Error registering user:", error.message);
+    const userData = {
+      email,
+      password,
+    };
+    const response = await userRegistration(userData);
+    console.log(response);
+    if (response.status === 201) {
+      dispatch(login(userData));
+      toast.success("User registered successfully!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      // localStorage.setItem("isLogged", true);
+      navigate("/");
+    }
+    if (response.status === 400) {
+      toast.error("User already exists!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+      });
     }
   };
 
   const handleGoogleRegistration = async () => {
-    const googleProvider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, googleProvider);
-      dispatch(login(auth.currentUser));
-      const user = {
-        email: auth.currentUser.email,
-        displayName: auth.currentUser.displayName,
-        photoURL: auth.currentUser.photoURL,
-        phoneNumber: auth.currentUser.phoneNumber,
-        gender: "Not Specified",
-        city: localStorage.getItem("userLocation"),
-      };
-      await addDoc(collection(db, "users"), user);
-      localStorage.setItem("userInfo", auth.currentUser.email);
-      console.log("User registered with Google successfully");
-    } catch (error) {
-      console.error("Error registering with Google:", error.message);
-    }
+    console.log("Google Registration");
   };
 
   const handlePhoneRegistration = async (e) => {
     e.preventDefault();
     const phone = "+91" + phoneNumber;
-    try {
-      const recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {}
-      );
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        phone,
-        recaptchaVerifier
-      );
-      setConfirmationResult(confirmationResult);
-      alert("OTP has been sent");
-    } catch (error) {
-      alert("Error logging in: " + error.message);
-    }
+    console.log(phone);
   };
 
   const verifyOtp = async (e) => {
     e.preventDefault();
-    try {
-      await confirmationResult.confirm(otp);
-      alert("Phone Login successful");
-      localStorage.setItem("userInfo", auth.currentUser.phoneNumber);
-      dispatch(login(auth.currentUser.phoneNumber));
-    } catch (error) {
-      alert("Error verifying OTP: " + error.message);
-    }
+    console.log(otp);
   };
-
+  useEffect(() => {});
   return (
     <>
       {isLoggedIn && <Navigate to="/" />}

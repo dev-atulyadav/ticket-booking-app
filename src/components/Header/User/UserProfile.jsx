@@ -1,19 +1,11 @@
 import { useEffect, useState } from "react";
 import Logout from "../Logout";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { MutatingDots } from "react-loader-spinner";
 
 const UserProfile = () => {
-  const auth = getAuth();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
 
   if (!user) {
     return <MutatingDots>Loading...</MutatingDots>;
@@ -26,9 +18,9 @@ const UserProfile = () => {
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <img
-              src={user.photoURL}
+              // src={user.photoURL}
               className="h-32 w-32 rounded-full border-4 border-gray-200 shadow-lg"
-              alt={user.displayName}
+              // alt={user.displayName}
             />
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-green-500 px-3 py-1 rounded-full">
               <span className="text-white text-sm font-medium">Active</span>
@@ -36,9 +28,7 @@ const UserProfile = () => {
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800">
-              {user?.displayName}
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
             <p className="text-gray-600">{user?.email}</p>
           </div>
 
@@ -47,15 +37,13 @@ const UserProfile = () => {
               <div className="text-center">
                 <p className="text-gray-600 text-sm">Member since</p>
                 <p className="font-semibold">
-                  {new Date(user?.metadata?.creationTime).toLocaleDateString()}
+                  {new Date(user?.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <div className="text-center">
                 <p className="text-gray-600 text-sm">Last login</p>
                 <p className="font-semibold">
-                  {new Date(
-                    user?.metadata?.lastSignInTime
-                  ).toLocaleDateString()}
+                  {new Date(user?.lastLoginAt).toLocaleDateString()}
                 </p>
               </div>
             </div>

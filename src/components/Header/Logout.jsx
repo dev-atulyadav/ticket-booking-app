@@ -2,7 +2,6 @@ import React from "react";
 import { FaPowerOff } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/user/userSlice";
-import { auth } from "../../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
@@ -13,7 +12,6 @@ const Logout = () => {
       <button
         onClick={() => {
           dispatch(logout());
-          auth.signOut();
           localStorage.removeItem("isLogged");
           navigate("/login");
         }}

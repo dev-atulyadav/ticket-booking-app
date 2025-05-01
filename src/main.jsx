@@ -5,9 +5,12 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/router.jsx";
 import { Provider } from "react-redux";
 import { store } from "./app/store.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
+    <ToastContainer />
     <RouterProvider router={router} />
   </Provider>
 );

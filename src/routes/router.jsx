@@ -10,6 +10,7 @@ import UserProfile from "../components/Header/User/UserProfile";
 import ViewSeats from "../components/ViewSeats/ViewSeats";
 import HelpSupport from "../components/Help&Support/HelpSupport";
 import ErrorPage from "../components/Error/ErrorPage";
+import PaymentPage from "../components/Payment/PaymentPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "/help&support",
         element: <HelpSupport />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentPage />,
       },
     ],
   },

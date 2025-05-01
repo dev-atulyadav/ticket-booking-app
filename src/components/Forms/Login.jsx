@@ -1,45 +1,68 @@
 import React, { useEffect, useState } from "react";
-import {
-  auth,
-  signInWithEmailAndPassword,
-  googleProvider,
-  signInWithPopup,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "../../../firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { login } from "../../features/user/userSlice";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { userLogin } from "../../utils/action";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  console.log(user, isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [isLoginWithPhone, setIsLoginWithPhone] = useState(false);
-
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      dispatch(login(auth.currentUser.email));
-      localStorage.setItem("userInfo", auth.currentUser.email);
-    } catch (error) {
-      alert("Error logging in: " + error.message);
+    const userData = {
+      email,
+      password,
+    };
+    const response = await userLogin(userData);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch(login(userData));
+      toast.success("Login successful!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      // localStorage.setItem("isLogged", true);
+      navigate("/");
+      dispatch(login(response.data));
+    } else if (response.status === 401) {
+      toast.error("Invalid email or password!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+    } else if (response.status === 404) {
+      toast.error("User not found!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
+    } else if (response.status === 500) {
+      toast.error("Internal server error!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+      });
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      dispatch(login(auth.currentUser.email));
-      localStorage.setItem("userInfo", auth.currentUser.email);
-      // alert("Login successful");
+      console.log("Google Login");
     } catch (error) {
       alert("Error logging in: " + error.message);
     }
@@ -48,35 +71,14 @@ const Login = () => {
   const handlePhoneLogin = async (e) => {
     e.preventDefault();
     const phoneNumber = "+91" + phone;
-    try {
-      const recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {}
-      );
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        phoneNumber,
-        recaptchaVerifier
-      );
-      setConfirmationResult(confirmationResult);
-      alert("OTP has been sent");
-    } catch (error) {
-      alert("Error logging in: " + error.message);
-    }
+    console.log(phoneNumber);
   };
 
   const verifyOtp = async (e) => {
     e.preventDefault();
-    try {
-      await confirmationResult.confirm(otp);
-      alert("Phone Login successful");
-      dispatch(login(phone));
-      localStorage.setItem("userInfo", auth.currentUser.phoneNumber);
-    } catch (error) {
-      alert("Error verifying OTP: " + error.message);
-    }
+    console.log(otp);
   };
+  useEffect(() => {});
 
   return (
     <>
@@ -120,6 +122,7 @@ const Login = () => {
                   />
                 </div>
                 <button
+                  onClick={handleLogin}
                   className="px-3 w-24 uppercase py-2 border-sky-400 border rounded-lg text-sky-500 font-semibold hover:bg-sky-500 hover:text-white duration-200"
                   type="submit"
                 >
