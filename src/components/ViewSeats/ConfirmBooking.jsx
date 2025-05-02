@@ -17,7 +17,7 @@ const ConfirmBooking = ({ selectedSeats, onClose, movieId }) => {
     e.preventDefault();
     const movie = await getSingleMovie(movieId);
     const data = {
-      userId: user.id,
+      userId: user._id,
       seats: selectedSeats,
       movie: {
         movieId: movieId,
