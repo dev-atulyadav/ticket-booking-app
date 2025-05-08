@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTicket } from "../../features/user/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getTickets } from "../../utils/action";
 
 const MyTickets = () => {
   const user = JSON.parse(localStorage.getItem("userInfo"));
-  const { tickets } = useSelector((state) => state.user);
+  const [tickets, setTickets] = useState([]);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(tickets);
+  const fetchTickets = async () => {
+    const response = await getTickets(user.id);
+    setTickets(response);
+    console.log(response);
+  };
+  useEffect(() => {
+    if (user) {
+      fetchTickets();
+    } else {
+      navigate("/login");
+    }
+  }, []);
   if (tickets.length === 0) {
     return (
       <div className="p-10 flex w-full flex-col items-center justify-center gap-10 h-screen">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import RazorpayButton from "./RazorpayButton";
 
 const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -15,7 +16,7 @@ const PaymentPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!paymentMethod) {
       toast.error("Please select a payment method");
       return;
@@ -42,7 +43,7 @@ const PaymentPage = () => {
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold mb-6 text-center">Payment Details</h1>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -127,6 +128,7 @@ const PaymentPage = () => {
             Pay Now
           </button>
         </form>
+        <RazorpayButton />
       </div>
     </div>
   );

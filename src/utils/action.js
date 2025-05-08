@@ -49,3 +49,17 @@ export const bookTicket = async (data) => {
     return err;
   }
 };
+
+//get ticket from db
+export const getTickets = async (userId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/ticket/get-tickets`,
+      userId
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

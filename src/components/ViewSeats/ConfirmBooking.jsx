@@ -44,7 +44,7 @@ const ConfirmBooking = ({ selectedSeats, onClose, movieId }) => {
         draggable: true,
         progress: undefined,
       });
-      navigate("/payment");
+      navigate("/my-tickets");
     }
     if (response.status === 400) {
       toast.error(response.message, {

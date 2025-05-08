@@ -22,7 +22,7 @@ const Popular = () => {
           Popular Movies
         </h1>
         <main className="grid gap-10 xl:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 relative">
-          {data.length > 0 &&
+          {data && data.length > 0 &&
             data.map(
               (movie, index) =>
                 index < inViewMovies && (
