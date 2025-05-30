@@ -18,9 +18,11 @@ const UserProfile = () => {
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <img
-              // src={user.photoURL}
+              src={
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4YreOWfDX3kK-QLAbAL4ufCPc84ol2MA8Xg&s"
+              }
               className="h-32 w-32 rounded-full border-4 border-gray-200 shadow-lg"
-              // alt={user.displayName}
+              alt={user?.name}
             />
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-green-500 px-3 py-1 rounded-full">
               <span className="text-white text-sm font-medium">Active</span>
@@ -28,7 +30,7 @@ const UserProfile = () => {
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-800 capitalize">{user?.name}</h2>
             <p className="text-gray-600">{user?.email}</p>
           </div>
 
@@ -38,12 +40,6 @@ const UserProfile = () => {
                 <p className="text-gray-600 text-sm">Member since</p>
                 <p className="font-semibold">
                   {new Date(user?.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray-600 text-sm">Last login</p>
-                <p className="font-semibold">
-                  {new Date(user?.lastLoginAt).toLocaleDateString()}
                 </p>
               </div>
             </div>

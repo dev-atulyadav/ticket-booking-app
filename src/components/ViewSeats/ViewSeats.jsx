@@ -4,6 +4,7 @@ import { setMovieSeat } from "../../features/movie/moiveSeatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmBooking from "./ConfirmBooking";
 import { toast } from "react-toastify";
+import { getBookedSeats } from "../../utils/action";
 
 const ViewSeats = () => {
   const { movieName, id } = useParams();
@@ -21,14 +22,17 @@ const ViewSeats = () => {
     setIsSelected(!isSelected);
   };
   const isMovieStored = movieSeat.find((movie) => movie.id === id);
-  // useEffect(() => {
-  //   if (isMovieStored) {
-  //     dispatch(setSelectedSeats(isMovieStored.selectedSeats));
-  //   } else {
-  //     dispatch(setMovieSeat([...movieSeat]));
-  //   }
-  // }, []);
-  console.log(movieSeat);
+  const [bookedSeats, setBookedSeats] = useState([]);
+
+  const fetchBookedSeats = async () => {
+    const movie = await getBookedSeats(id);
+    setBookedSeats(movie.data?.bookedSeats || []);
+    console.log(movie);
+  };
+
+  useEffect(() => {
+    fetchBookedSeats();
+  }, []);
   return (
     <section className="p-10">
       <div className="grid grid-cols-12 gap-4">
@@ -64,9 +68,22 @@ const ViewSeats = () => {
                 <div key={index} className="col-span-1">
                   {index >= 0 && index <= 29 && (
                     <button
-                      onClick={() => handleSeatClick("F" + (index + 1))}
-                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-green-300 transition-all duration-300 hover:text-white ${
-                        selectedSeats.includes(index + 1)
+                      onClick={() => {
+                        bookedSeats.includes("F" + (index + 1))
+                          ? toast.error("Seat is already booked", {
+                              position: "top-center",
+                              autoClose: 5000,
+                            })
+                          : handleSeatClick("F" + (index + 1));
+                      }}
+                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center ${
+                        bookedSeats.includes("F" + (index + 1))
+                          ? ""
+                          : "hover:bg-green-300"
+                      } transition-all duration-300 hover:text-white ${
+                        bookedSeats.includes("F" + (index + 1))
+                          ? "bg-red-500 text-white"
+                          : selectedSeats.includes("F" + (index + 1))
                           ? "bg-green-300 text-white"
                           : ""
                       }`}
@@ -77,9 +94,22 @@ const ViewSeats = () => {
 
                   {index >= 30 && index <= 59 && (
                     <button
-                      onClick={() => handleSeatClick("M" + (index + 1))}
-                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-orange-300 transition-all duration-300 hover:text-white ${
-                        selectedSeats.includes("M" + (index + 1))
+                      onClick={() => {
+                        bookedSeats.includes("M" + (index + 1))
+                          ? toast.error("Seat is already booked", {
+                              position: "top-center",
+                              autoClose: 5000,
+                            })
+                          : handleSeatClick("M" + (index + 1));
+                      }}
+                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center ${
+                        bookedSeats.includes("M" + (index + 1))
+                          ? ""
+                          : "hover:bg-orange-300"
+                      } transition-all duration-300 hover:text-white ${
+                        bookedSeats.includes("M" + (index + 1))
+                          ? "bg-red-500 text-white"
+                          : selectedSeats.includes("M" + (index + 1))
                           ? "bg-orange-300 text-white"
                           : ""
                       }`}
@@ -89,9 +119,22 @@ const ViewSeats = () => {
                   )}
                   {index >= 60 && index <= 89 && (
                     <button
-                      onClick={() => handleSeatClick("B" + (index + 1))}
-                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center hover:bg-sky-300 transition-all duration-300 hover:text-white ${
-                        selectedSeats.includes("B" + (index + 1))
+                      onClick={() => {
+                        bookedSeats.includes("B" + (index + 1))
+                          ? toast.error("Seat is already booked", {
+                              position: "top-center",
+                              autoClose: 5000,
+                            })
+                          : handleSeatClick("B" + (index + 1));
+                      }}
+                      className={`w-12 h-12 bg-gray-200 rounded-md flex justify-center items-center ${
+                        bookedSeats.includes("B" + (index + 1))
+                          ? ""
+                          : "hover:bg-sky-300"
+                      } transition-all duration-300 hover:text-white ${
+                        bookedSeats.includes("B" + (index + 1))
+                          ? "bg-red-500 text-white"
+                          : selectedSeats.includes("B" + (index + 1))
                           ? "bg-sky-300 text-white"
                           : ""
                       }`}

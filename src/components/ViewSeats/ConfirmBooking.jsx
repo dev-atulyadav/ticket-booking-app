@@ -17,7 +17,7 @@ const ConfirmBooking = ({ selectedSeats, onClose, movieId }) => {
     e.preventDefault();
     const movie = await getSingleMovie(movieId);
     const data = {
-      userId: user._id,
+      userId: user._id || user.id,
       seats: selectedSeats,
       movie: {
         movieId: movieId,
@@ -35,7 +35,7 @@ const ConfirmBooking = ({ selectedSeats, onClose, movieId }) => {
     const response = await bookTicket(data);
     console.log(response);
     if (response.status === 200) {
-      toast.success("Please pay the amount to confirm the booking!", {
+      toast.success("Ticket booked successfully!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,

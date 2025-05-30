@@ -54,10 +54,34 @@ export const bookTicket = async (data) => {
 export const getTickets = async (userId) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/ticket/get-tickets`,
-      userId
+      `${BASE_URL}/api/ticket/get-tickets/${userId}`
     );
-    console.log(response.data);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// get booked seats
+export const getBookedSeats = async (movieId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/movie/get-movie-by-movieId/${movieId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// remove ticket
+export const removeTicket = async (ticketId) => {
+  try {
+    const response = await axios.delete(
+      `${BASE_URL}/api/ticket/remove-ticket/${ticketId}`
+    );
     return response.data;
   } catch (error) {
     console.log(error);
